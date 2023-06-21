@@ -6,23 +6,21 @@ import io.vertx.core.Vertx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
-
 public class MainVerticle extends AbstractVerticle {
 
   private static final Logger LOG = LoggerFactory.getLogger(MainVerticle.class);
 
-//  public static void main(String[] args) {
-//    Vertx vertx = Vertx.vertx();
-//    vertx.deployVerticle(new MainVerticle());
-//  }
+  public static void main(String[] args) {
+    Vertx vertx = Vertx.vertx();
+    vertx.deployVerticle(new MainVerticle());
+  }
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
     vertx.createHttpServer().requestHandler(req -> {
       req.response()
-        .putHeader("content-type", "text/plain")
-        .end("Hello World!");
+              .putHeader("content-type", "text/plain")
+              .end("Hello World!");
     }).listen(8888, http -> {
       if (http.succeeded()) {
         startPromise.complete();
@@ -30,7 +28,6 @@ public class MainVerticle extends AbstractVerticle {
       } else {
         startPromise.fail(http.cause());
       }
-      vertx.setPeriodic(100, id -> LOG.info(String.valueOf(new Random().nextDouble())));
     });
   }
 }
